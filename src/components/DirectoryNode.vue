@@ -1,21 +1,38 @@
 <script setup lang="ts">
-import DirectoryIcon from '../assets/folder.svg';
-import OpenDirectoryIcon from '../assets/right-arrow.svg';
+import FileNode from './FileNode.vue';
+
 import { Directory } from '../types';
 
+import DirectoryIcon from '../assets/folder.svg';
+import OpenDirectoryIcon from '../assets/right-arrow.svg';
+
 defineProps<{ directory: Directory }>();
+defineEmits<{
+  (event: 'open-folder', folder: Directory): void;
+}>();
+
+const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
 </script>
 
 <template>
-  <div class="directory-node">
-    <div class="directory-node-icon">
-      <img :src="DirectoryIcon" alt="directory-icon" />
+  <div v-for="folder in directory.folders" :key="folder.id">
+    <div class="directory-node" @click="$emit('open-folder', folder)">
+      <div class="directory-node-icon">
+        <img :src="DirectoryIcon" alt="directory-icon" />
+      </div>
+      <p class="directory-node-name">
+        {{ folder.name || 'Expose Material' }}
+      </p>
+      <img :src="OpenDirectoryIcon" alt="open-directory-icon" />
     </div>
-    <p class="directory-node-name">
-      {{ directory.name || 'Expose Material' }}
-    </p>
-    <img :src="OpenDirectoryIcon" alt="open-directory-icon" />
   </div>
+
+  <template v-for="file in directory.files" :file="file" :key="file.id">
+    <FileNode
+      :file="file"
+      v-if="supportedFileFormats.includes(file.mimeType)"
+    />
+  </template>
 </template>
 
 <style lang="css">

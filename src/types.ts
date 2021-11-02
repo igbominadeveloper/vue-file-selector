@@ -12,19 +12,10 @@ export interface File {
   id: string;
   name: string;
   url: string;
-  mimeType: MimeType;
+  mimeType: 'image/png' | 'image/jpeg' | 'application/pdf';
   usage: 'internal';
-  floorPlan: null;
-  parentFolderId: null;
+  floorPlan: string | null;
+  parentFolderId: string | null;
   createdAt: number;
   updatedAt: number;
-}
-
-export enum MimeType {
-  ImagePng = 'image/png',
-  ImageJpeg = 'image/jpeg',
-  ImageGif = 'image/gif',
-  Zip = 'application/zip',
-  Doc = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  Sheet = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }

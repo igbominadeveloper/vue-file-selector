@@ -31,21 +31,34 @@ const selectedFiles = ref([
 ]);
 
 const showDirectory = ref(false);
-
 const fullDirectory = ref<Directory>({ ...DirectoryStub });
 const selectedDirectory = ref(fullDirectory.value);
-
-const setCurrentDirectory = (activeFolder: Directory) => {
-  selectedDirectory.value = activeFolder;
-};
 
 const showBackButton = computed(() => {
   return selectedDirectory.value.folders[0]?.parentFolderId !== null;
 });
 
+const viewedDirectories = {
+  [selectedDirectory.value?.parentFolderId || 'null']: selectedDirectory.value,
+};
+
+const setCurrentDirectory = (activeFolder: Directory) => {
+  if (activeFolder.id) {
+    viewedDirectories[activeFolder.id] = activeFolder;
+  }
+  selectedDirectory.value = activeFolder;
+};
+
 const closeDirectory = () => {
   selectedDirectory.value = fullDirectory.value;
   showDirectory.value = false;
+};
+
+const goBack = () => {
+  const parentFolder =
+    viewedDirectories[selectedDirectory.value?.parentFolderId || 'null'];
+
+  selectedDirectory.value = parentFolder;
 };
 </script>
 
@@ -57,7 +70,7 @@ const closeDirectory = () => {
     </Button>
     <section class="directory-tree" v-if="showDirectory">
       <header class="directory-tree-header">
-        <div>
+        <div @click="goBack">
           <img
             :src="BackButton"
             alt="back-button"
@@ -65,7 +78,7 @@ const closeDirectory = () => {
             v-show="showBackButton"
           />
         </div>
-        <h1 class="directory-name">Directory</h1>
+        <h1 class="directory-name">{{ selectedDirectory.name }}</h1>
         <img
           :src="CloseButton"
           alt="close-button"

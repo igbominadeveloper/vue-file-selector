@@ -36,5 +36,7 @@ defineProps<{ directory: Directory }>();
   justify-content: center;
 
   background: var(--color-grey);
+
+  border-radius: 4px;
 }
 </style>

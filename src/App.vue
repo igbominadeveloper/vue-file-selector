@@ -3,11 +3,12 @@ import { ref } from '@vue/reactivity';
 
 import Button from './components/Button.vue';
 import DirectoryNode from './components/DirectoryNode.vue';
-import { Directory } from './types';
+import { Directory, File } from './types';
 
 //ICONS
 import BackButton from './assets/back-arrow.svg';
 import CloseButton from './assets/close-icon.svg';
+import FileNode from './components/FileNode.vue';
 
 const selectedFiles = ref([
   {
@@ -28,6 +29,17 @@ const selectedFiles = ref([
 ]);
 
 const directory: Directory = { files: [], folders: [] };
+const file: File = {
+  id: '5a635f92-91f6-47c8-8e3d-4261d7787fa2',
+  name: 'd34grog-117663eb-df1a-4f70-94a2-5c94be0db08e.png',
+  url: 'https://reo-api-dev.s3.eu-central-1.amazonaws.com/property-documents/dfaf8f26-d74c-47ab-84ed-38feaae42725/c7c9688c-9dd6-4393-82f8-25b5e2eaacd6.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA3EL37BD4NO5TW5MV%2F20210426%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20210426T145118Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=b81fb87116f53a861fd69ce1b2038fd8c7c6e4370a5a1bdf779c63f9cf6ce58f',
+  mimeType: 'image/png',
+  usage: 'internal',
+  floorPlan: null,
+  parentFolderId: 'a857abe8-ff78-4a79-993b-1c912ef6488a',
+  createdAt: 1618239851000,
+  updatedAt: 1618566238000,
+};
 
 const showDirectory = ref(false);
 </script>
@@ -62,32 +74,16 @@ const showDirectory = ref(false);
             <DirectoryNode :directory="directory" />
             <DirectoryNode :directory="directory" />
             <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
-            <DirectoryNode :directory="directory" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
+            <FileNode :file="file" />
           </div>
           <footer class="directory-tree-footer">
             <Button class="directory-tree-footer-button"> Select files </Button>

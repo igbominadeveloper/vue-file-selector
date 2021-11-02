@@ -9,6 +9,7 @@
   background: var(--color-blue);
   color: var(--color-white);
   border-radius: 4px;
+  max-width: 108px;
 
   padding: 5px 16px;
   font-size: var(--font-size-md);

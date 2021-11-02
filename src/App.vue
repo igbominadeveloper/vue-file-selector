@@ -2,6 +2,8 @@
 import { ref } from '@vue/reactivity';
 
 import Button from './components/Button.vue';
+import DirectoryNode from './components/DirectoryNode.vue';
+import { Directory } from './types';
 
 //ICONS
 import BackButton from './assets/back-arrow.svg';
@@ -25,6 +27,8 @@ const selectedFiles = ref([
   },
 ]);
 
+const directory: Directory = { files: [], folders: [] };
+
 const showDirectory = ref(false);
 </script>
 
@@ -46,7 +50,45 @@ const showDirectory = ref(false);
             />
           </header>
 
-          <div class="directory-tree-list"></div>
+          <div class="directory-tree-body">
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+          </div>
           <footer class="directory-tree-footer">
             <Button class="directory-tree-footer-button"> Select files </Button>
           </footer>
@@ -132,6 +174,7 @@ const showDirectory = ref(false);
 
   display: grid;
   grid-template-rows: 60px auto 64px;
+  gap: 10px;
 }
 
 .directory-tree-footer {
@@ -140,7 +183,11 @@ const showDirectory = ref(false);
   align-items: center;
 }
 
-.directory-tree-list {
-  overflow-y: scroll;
+.directory-tree-body {
+  overflow-y: auto;
+
+  display: grid;
+  grid-auto-flow: row;
+  gap: 16px;
 }
 </style>

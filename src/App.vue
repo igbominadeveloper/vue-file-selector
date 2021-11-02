@@ -2,6 +2,8 @@
 import { ref } from '@vue/reactivity';
 
 import Button from './components/Button.vue';
+import DirectoryNode from './components/DirectoryNode.vue';
+import { Directory } from './types';
 
 //ICONS
 import BackButton from './assets/back-arrow.svg';
@@ -25,6 +27,8 @@ const selectedFiles = ref([
   },
 ]);
 
+const directory: Directory = { files: [], folders: [] };
+
 const showDirectory = ref(false);
 </script>
 
@@ -34,7 +38,7 @@ const showDirectory = ref(false);
       Select Files
       <!-- I tried using teleport here -->
       <Teleport to="#teleport-target">
-        <section class="directory-tree" v-if="showDirectory">
+        <section class="directory-tree" v-show="showDirectory">
           <header class="directory-tree-header">
             <img :src="BackButton" alt="back-button" class="pointer" />
             <h1 class="directory-name">Directory</h1>
@@ -45,6 +49,49 @@ const showDirectory = ref(false);
               @click="showDirectory = false"
             />
           </header>
+
+          <div class="directory-tree-body">
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+            <DirectoryNode :directory="directory" />
+          </div>
+          <footer class="directory-tree-footer">
+            <Button class="directory-tree-footer-button"> Select files </Button>
+          </footer>
         </section>
       </Teleport>
     </Button>
@@ -121,8 +168,26 @@ const showDirectory = ref(false);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 8px 24px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
 
-  padding: 22.05px 21.78px;
+  padding: 0 21.78px;
 
   font-family: var(--font-family-secondary);
+
+  display: grid;
+  grid-template-rows: 60px auto 64px;
+  gap: 10px;
+}
+
+.directory-tree-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.directory-tree-body {
+  overflow-y: auto;
+
+  display: grid;
+  grid-auto-flow: row;
+  gap: 16px;
 }
 </style>

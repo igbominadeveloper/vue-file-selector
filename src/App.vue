@@ -3,6 +3,10 @@ import { ref } from '@vue/reactivity';
 
 import Button from './components/Button.vue';
 
+//ICONS
+import BackButton from './assets/back-arrow.svg';
+import CloseButton from './assets/close-icon.svg';
+
 const selectedFiles = ref([
   {
     name: 'file name',
@@ -20,11 +24,30 @@ const selectedFiles = ref([
     name: 'file name',
   },
 ]);
+
+const showDirectory = ref(false);
 </script>
 
 <template>
   <main>
-    <Button />
+    <Button @click="showDirectory = true" class="click-handler">
+      Select Files
+      <!-- I tried using teleport here -->
+      <Teleport to="#teleport-target">
+        <section class="directory-tree" v-if="showDirectory">
+          <header class="directory-tree-header">
+            <img :src="BackButton" alt="back-button" class="pointer" />
+            <h1 class="directory-name">Directory</h1>
+            <img
+              :src="CloseButton"
+              alt="close-button"
+              class="pointer"
+              @click="showDirectory = false"
+            />
+          </header>
+        </section>
+      </Teleport>
+    </Button>
 
     <section class="selected-files">
       <h2 class="selected-files-heading">Files Selected</h2>
@@ -43,62 +66,10 @@ const selectedFiles = ref([
 </template>
 
 <style>
-:root {
-  --color-blue: #1890ff;
-  --color-white: #ffffff;
-  --color-black: #262626;
+@import 'assets/index.css';
 
-  --font-size-base: 16px;
-  --font-size-md: 14px;
-  --font-family: SF Pro Display;
-}
-
-html {
-  box-sizing: border-box;
-  font-size: var(--font-size-base);
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ol,
-ul {
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
-
-ol,
-ul {
-  list-style: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-main {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  padding-top: 10rem;
-
-  max-width: 768px;
-  margin: 0 auto;
+.click-handler {
+  position: relative;
 }
 
 .selected-files {
@@ -119,5 +90,39 @@ main {
 
 .selected-files-item {
   margin: 7px 0;
+}
+
+.directory-name {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+.directory-tree-header {
+  display: grid;
+  grid-template-columns: 16.43px auto 14.13px;
+  gap: 13.79px;
+  align-items: center;
+}
+/* 
+#teleport-target {
+  position: absolute;
+  top: 10rem;
+  left: 15rem;
+} */
+
+.directory-tree {
+  height: 380px;
+  width: 420px;
+  border-radius: 16px;
+
+  background: var(--color-white);
+
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 16px;
+
+  padding: 22.05px 21.78px;
+
+  font-family: var(--font-family-secondary);
 }
 </style>

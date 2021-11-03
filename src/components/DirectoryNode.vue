@@ -16,7 +16,7 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
 </script>
 
 <template>
-  <div v-for="folder in directory.folders" :key="folder.id">
+  <template v-for="folder in directory.folders" :key="folder.id">
     <div class="directory-node" @click="$emit('open-folder', folder)">
       <div class="directory-node-icon">
         <img :src="DirectoryIcon" alt="directory-icon" />
@@ -24,9 +24,11 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
       <p class="directory-node-name">
         {{ folder.name || 'Expose Material' }}
       </p>
-      <img :src="OpenDirectoryIcon" alt="open-directory-icon" />
+      <div class="open-folder-icon">
+        <img :src="OpenDirectoryIcon" alt="open-directory-icon" />
+      </div>
     </div>
-  </div>
+  </template>
 
   <template v-for="file in directory.files" :file="file" :key="file.id">
     <FileNode
@@ -41,10 +43,17 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
 <style lang="css">
 .directory-node {
   display: grid;
-  grid-template-columns: 28px auto 11px;
+  grid-template-columns: 28px auto 28px;
   gap: 12px;
   align-items: center;
   cursor: pointer;
+  height: 100%;
+  padding: 8px;
+}
+
+.directory-node:hover {
+  background: var(--color-grey);
+  border-radius: 8px;
 }
 
 .directory-node-icon {
@@ -58,5 +67,10 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
   background: var(--color-grey);
 
   border-radius: 4px;
+}
+
+.open-folder-icon {
+  display: flex;
+  justify-content: center;
 }
 </style>

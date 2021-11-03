@@ -9,7 +9,7 @@
   background: var(--color-blue);
   color: var(--color-white);
   border-radius: 4px;
-  max-width: 108px;
+  max-width: 120px;
 
   padding: 7px 12px;
   font-size: var(--font-size-md);

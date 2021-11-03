@@ -155,23 +155,23 @@ watch(showDirectory, (newValue) => {
 }
 
 .selected-files {
-  align-self: flex-start;
+  width: 396px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 
   margin-top: 33px;
-  padding: 0 2rem;
 }
 
 .selected-files-heading {
   font-size: calc(var(--font-size-base) - 2px);
-  font-weight: 500;
+  font-weight: 600;
+  font-size: var(--font-size-base);
 }
 
 .selected-files-item {
   margin: 7px 0;
+  font-size: var(--font-size-base);
 }
 
 .directory-name {
@@ -201,7 +201,7 @@ watch(showDirectory, (newValue) => {
 }
 
 .action-button-container:hover {
-  background: var(--mild-shadow);
+  background: var(--color-grey);
   border-radius: 8px;
   cursor: pointer;
 }
@@ -217,7 +217,7 @@ watch(showDirectory, (newValue) => {
 
   background: var(--color-white);
 
-  box-shadow: 0px 4px 8px var(--mild-shadow), 0px 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 4px 8px var(--color-grey), 0px 8px 24px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
 
   padding: 8px;

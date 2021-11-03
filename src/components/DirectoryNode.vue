@@ -52,7 +52,7 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
 }
 
 .directory-node:hover {
-  background: var(--mild-shadow);
+  background: var(--color-grey);
   border-radius: 8px;
 }
 

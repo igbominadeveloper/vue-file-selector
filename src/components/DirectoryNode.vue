@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import FileNode from './FileNode.vue';
 
-import { Directory } from '../types';
+import { Directory, File } from '../types';
 
 import DirectoryIcon from '../assets/folder.svg';
 import OpenDirectoryIcon from '../assets/right-arrow.svg';
 
-defineProps<{ directory: Directory }>();
+defineProps<{ directory: Directory; selectedFiles: string[] }>();
 defineEmits<{
   (event: 'open-folder', folder: Directory): void;
+  (event: 'toggle-file-selection', file: File): void;
 }>();
 
 const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -30,7 +31,9 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
   <template v-for="file in directory.files" :file="file" :key="file.id">
     <FileNode
       :file="file"
+      :isSelected="selectedFiles.includes(file.id)"
       v-if="supportedFileFormats.includes(file.mimeType)"
+      @toggle-file-selection="$emit('toggle-file-selection', file)"
     />
   </template>
 </template>

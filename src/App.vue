@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from '@vue/reactivity';
+import { watch } from '@vue/runtime-core';
 
 import Button from './components/Button.vue';
 import DirectoryNode from './components/DirectoryNode.vue';
@@ -9,26 +10,11 @@ import DirectoryStub from '../stub.json';
 //ICONS
 import BackButton from './assets/back-arrow.svg';
 import CloseButton from './assets/close-icon.svg';
-import FileNode from './components/FileNode.vue';
-import { Directory } from './types';
 
-const selectedFiles = ref([
-  {
-    name: 'file name',
-  },
-  {
-    name: 'file name',
-  },
-  {
-    name: 'file name',
-  },
-  {
-    name: 'file name',
-  },
-  {
-    name: 'file name',
-  },
-]);
+import { Directory, File } from './types';
+
+const selectedFiles = ref<File[]>([]);
+const tempSelectedFiles = ref<File[]>([]);
 
 const showDirectory = ref(false);
 const fullDirectory = ref<Directory>({ ...DirectoryStub });
@@ -36,6 +22,15 @@ const selectedDirectory = ref(fullDirectory.value);
 
 const showBackButton = computed(() => {
   return selectedDirectory.value.folders[0]?.parentFolderId !== null;
+});
+
+const allFilesSelected = computed(() => {
+  const allFiles = [...tempSelectedFiles.value, ...selectedFiles.value].map(
+    (file) => file.id
+  );
+
+  const allFilesSet = new Set(allFiles);
+  return [...allFilesSet];
 });
 
 const viewedDirectories = {
@@ -52,6 +47,7 @@ const setCurrentDirectory = (activeFolder: Directory) => {
 const closeDirectory = () => {
   selectedDirectory.value = fullDirectory.value;
   showDirectory.value = false;
+  tempSelectedFiles.value = [];
 };
 
 const goBack = () => {
@@ -60,6 +56,27 @@ const goBack = () => {
 
   selectedDirectory.value = parentFolder;
 };
+
+const toggleFileSelection = (file: File) => {
+  if (tempSelectedFiles.value.includes(file)) {
+    tempSelectedFiles.value = tempSelectedFiles.value.filter(
+      (tempFile) => tempFile.id !== file.id
+    );
+  } else {
+    tempSelectedFiles.value = [...tempSelectedFiles.value, file];
+  }
+};
+
+const populateSelectedFilesList = () => {
+  selectedFiles.value = [...tempSelectedFiles.value];
+  tempSelectedFiles.value = [];
+};
+
+watch(showDirectory, (newValue) => {
+  if (newValue) {
+    tempSelectedFiles.value = selectedFiles.value;
+  }
+});
 </script>
 
 <template>
@@ -90,11 +107,20 @@ const goBack = () => {
       <div class="directory-tree-body">
         <DirectoryNode
           :directory="selectedDirectory"
+          :selectedFiles="allFilesSelected"
           @open-folder="setCurrentDirectory"
+          @toggle-file-selection="toggleFileSelection"
         />
       </div>
       <footer class="directory-tree-footer">
-        <Button class="directory-tree-footer-button"> Select files </Button>
+        <Button
+          class="directory-tree-footer-button"
+          :disabled="!tempSelectedFiles.length"
+          @click="populateSelectedFilesList"
+        >
+          Select {{ tempSelectedFiles.length || null }}
+          {{ tempSelectedFiles.length === 1 ? 'file' : 'files' }}
+        </Button>
       </footer>
     </section>
 

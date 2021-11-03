@@ -1,21 +1,40 @@
 <script setup lang="ts">
 import FileSelectedIcon from '../assets/selected.svg';
 import PdfIcon from '../assets/pdf.svg';
-import FallbackImage from '../assets/fallback-picture.png';
+
+import FallbackImage1 from '../assets/fallback-1.png';
+import FallbackImage2 from '../assets/fallback-2.png';
+import FallbackImage3 from '../assets/fallback-3.png';
+import FallbackImage4 from '../assets/fallback-4.png';
 
 import { File } from '../types';
+import { computed } from '@vue/reactivity';
 
-defineProps<{ file: File }>();
+defineProps<{ file: File; isSelected: boolean }>();
+defineEmits<{
+  (event: 'toggle-file-selection'): void;
+}>();
+
+const randomFallbackImage = computed(() => {
+  const images = [
+    FallbackImage1,
+    FallbackImage2,
+    FallbackImage3,
+    FallbackImage4,
+  ];
+
+  return images[Math.floor(Math.random() * images.length)];
+});
 </script>
 
 <template>
-  <div class="file-node">
+  <div class="file-node" @click="$emit('toggle-file-selection')">
     <img
       :src="file.url || ''"
       alt="file-icon"
       class="file-node-image"
       v-if="file.mimeType === 'image/jpeg' || file.mimeType === 'image/png'"
-      @error="(error:any) => error.target.src = FallbackImage"
+      @error="(error:any) => error.target.src = randomFallbackImage"
     />
 
     <div class="file-node-icon" v-else-if="file.mimeType === 'application/pdf'">
@@ -25,11 +44,15 @@ defineProps<{ file: File }>();
     <p class="file-node-name">
       {{ file.name || 'Expose Material' }}
     </p>
-    <img
-      :src="FileSelectedIcon"
-      alt="selected-file-icon"
-      class="file-node-selector"
-    />
+
+    <div>
+      <img
+        :src="FileSelectedIcon"
+        alt="selected-file-icon"
+        class="file-node-selector"
+        v-if="isSelected"
+      />
+    </div>
   </div>
 </template>
 

@@ -5,8 +5,6 @@ import { onMounted, watch } from '@vue/runtime-core';
 import Button from './components/Button.vue';
 import DirectoryNode from './components/DirectoryNode.vue';
 
-import DirectoryStub from '../stub.json';
-
 //TODO ideally - this would be in an environment variable file
 const API_URL = 'https://api-dev.reo.so/api/folderStructure';
 
@@ -50,7 +48,6 @@ const closeDirectory = () => {
   selectedDirectory.value = fullDirectory.value;
   showDirectory.value = false;
   tempSelectedFiles.value = [];
-  // selectedFiles.value = [];
 };
 
 const goBack = () => {
@@ -73,6 +70,7 @@ const toggleFileSelection = (file: File) => {
 const populateSelectedFilesList = () => {
   selectedFiles.value = [...tempSelectedFiles.value];
   tempSelectedFiles.value = [];
+  closeDirectory();
 };
 
 const fetchAllDirectories = async () => {
@@ -97,59 +95,61 @@ onMounted(fetchAllDirectories);
 
 <template>
   <main>
-    <Button
-      @click="showDirectory = true"
-      class="click-handler"
-      :disabled="isFetchingDirectories"
-    >
-      {{ isFetchingDirectories ? 'Please wait...' : 'Select Files' }}
-      <!-- I tried using teleport here -->
-    </Button>
-    <section class="directory-tree" v-show="showDirectory">
-      <header class="directory-tree-header">
-        <div
-          :class="[
-            'action-button-container back-button-container',
-            !showBackButton && 'no-hover',
-          ]"
-          @click="goBack"
-        >
-          <img
-            :src="BackButton"
-            alt="back-button"
-            class="back-button"
-            v-show="showBackButton"
+    <div class="directory-wrapper">
+      <Button
+        @click="showDirectory = true"
+        class="click-handler"
+        :disabled="isFetchingDirectories"
+      >
+        {{ isFetchingDirectories ? 'Please wait...' : 'Select Files' }}
+        <!-- I tried using teleport here -->
+      </Button>
+      <section class="directory-tree" v-show="showDirectory">
+        <header class="directory-tree-header">
+          <div
+            :class="[
+              'action-button-container back-button-container',
+              !showBackButton && 'no-hover',
+            ]"
+            @click="goBack"
+          >
+            <img
+              :src="BackButton"
+              alt="back-button"
+              class="back-button"
+              v-show="showBackButton"
+            />
+          </div>
+          <h1 class="directory-name">{{ selectedDirectory.name }}</h1>
+
+          <div
+            class="action-button-container close-button-container"
+            @click="closeDirectory"
+          >
+            <img :src="CloseButton" alt="close-button" class="close-button" />
+          </div>
+        </header>
+
+        <div class="directory-tree-body">
+          <DirectoryNode
+            :directory="selectedDirectory"
+            :selectedFiles="allFilesSelected"
+            @open-folder="setCurrentDirectory"
+            @toggle-file-selection="toggleFileSelection"
           />
         </div>
-        <h1 class="directory-name">{{ selectedDirectory.name }}</h1>
-
-        <div
-          class="action-button-container close-button-container"
-          @click="closeDirectory"
-        >
-          <img :src="CloseButton" alt="close-button" class="close-button" />
-        </div>
-      </header>
-
-      <div class="directory-tree-body">
-        <DirectoryNode
-          :directory="selectedDirectory"
-          :selectedFiles="allFilesSelected"
-          @open-folder="setCurrentDirectory"
-          @toggle-file-selection="toggleFileSelection"
-        />
-      </div>
-      <footer class="directory-tree-footer">
-        <Button
-          class="directory-tree-footer-button"
-          :disabled="!tempSelectedFiles.length"
-          @click="populateSelectedFilesList"
-        >
-          Select {{ tempSelectedFiles.length || null }}
-          {{ tempSelectedFiles.length === 1 ? 'file' : 'files' }}
-        </Button>
-      </footer>
-    </section>
+        <footer class="directory-tree-footer">
+          <Button
+            class="directory-tree-footer-button"
+            :disabled="!tempSelectedFiles.length"
+            @click="populateSelectedFilesList"
+          >
+            Select {{ tempSelectedFiles.length || null }}
+            {{ tempSelectedFiles.length === 1 ? 'file' : 'files' }}
+          </Button>
+        </footer>
+      </section>
+    </div>
 
     <section class="selected-files">
       <h2 class="selected-files-heading">Files Selected</h2>
@@ -174,13 +174,23 @@ onMounted(fetchAllDirectories);
   position: relative;
 }
 
+.selected-files-list {
+  display: grid;
+  gap: 13px;
+
+  margin-top: 7px;
+}
+
 .selected-files {
-  width: 396px;
+  width: 100%;
+  max-width: 500px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   margin-top: 33px;
+  padding: 0 10px;
 }
 
 .selected-files-heading {
@@ -190,7 +200,6 @@ onMounted(fetchAllDirectories);
 }
 
 .selected-files-item {
-  margin: 7px 0;
   font-size: var(--font-size-base);
 }
 
@@ -210,6 +219,10 @@ onMounted(fetchAllDirectories);
 
 .back-button {
   width: 16.43px;
+}
+
+.directory-wrapper {
+  position: relative;
 }
 
 .action-button-container {
@@ -247,6 +260,9 @@ onMounted(fetchAllDirectories);
   display: grid;
   grid-template-rows: 44px auto 64px;
   gap: 10px;
+
+  position: absolute;
+  top: 0;
 }
 
 .directory-tree-footer {

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from '@vue/reactivity';
-import { watch } from '@vue/runtime-core';
+import { onMounted, watch } from '@vue/runtime-core';
 
 import Button from './components/Button.vue';
 import DirectoryNode from './components/DirectoryNode.vue';
 
 import DirectoryStub from '../stub.json';
+
+//TODO ideally - this would be in an environment variable file
+const API_URL = 'https://api-dev.reo.so/api/folderStructure';
 
 //ICONS
 import BackButton from './assets/back-arrow.svg';
@@ -15,22 +18,21 @@ import { Directory, File } from './types';
 
 const selectedFiles = ref<File[]>([]);
 const tempSelectedFiles = ref<File[]>([]);
+const isFetchingDirectories = ref(true);
 
 const showDirectory = ref(false);
-const fullDirectory = ref<Directory>({ ...DirectoryStub });
+const fullDirectory = ref<Directory>({} as Directory);
 const selectedDirectory = ref(fullDirectory.value);
 
 const showBackButton = computed(() => {
-  return selectedDirectory.value.folders[0]?.parentFolderId !== null;
+  return (
+    selectedDirectory?.value?.folders &&
+    selectedDirectory?.value?.folders[0]?.parentFolderId !== null
+  );
 });
 
 const allFilesSelected = computed(() => {
-  const allFiles = [...tempSelectedFiles.value, ...selectedFiles.value].map(
-    (file) => file.id
-  );
-
-  const allFilesSet = new Set(allFiles);
-  return [...allFilesSet];
+  return tempSelectedFiles.value.map((file) => file.id);
 });
 
 const viewedDirectories = {
@@ -48,6 +50,7 @@ const closeDirectory = () => {
   selectedDirectory.value = fullDirectory.value;
   showDirectory.value = false;
   tempSelectedFiles.value = [];
+  // selectedFiles.value = [];
 };
 
 const goBack = () => {
@@ -72,17 +75,34 @@ const populateSelectedFilesList = () => {
   tempSelectedFiles.value = [];
 };
 
+const fetchAllDirectories = async () => {
+  const response = await fetch(API_URL);
+  const data = await response.json();
+
+  fullDirectory.value = data;
+  selectedDirectory.value = data;
+  viewedDirectories[selectedDirectory.value?.parentFolderId || 'null'] =
+    selectedDirectory.value;
+  isFetchingDirectories.value = false;
+};
+
 watch(showDirectory, (newValue) => {
   if (newValue) {
     tempSelectedFiles.value = selectedFiles.value;
   }
 });
+
+onMounted(fetchAllDirectories);
 </script>
 
 <template>
   <main>
-    <Button @click="showDirectory = true" class="click-handler">
-      Select Files
+    <Button
+      @click="showDirectory = true"
+      class="click-handler"
+      :disabled="isFetchingDirectories"
+    >
+      {{ isFetchingDirectories ? 'Please wait...' : 'Select Files' }}
       <!-- I tried using teleport here -->
     </Button>
     <section class="directory-tree" v-show="showDirectory">

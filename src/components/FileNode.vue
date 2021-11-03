@@ -80,7 +80,7 @@ const randomFallbackImage = computed(() => {
 }
 
 .file-node-selector {
-  width: 17.5px;
+  width: 100%;
   height: 17.5px;
 }
 

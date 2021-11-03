@@ -44,6 +44,14 @@ const setCurrentDirectory = (activeFolder: Directory) => {
   selectedDirectory.value = activeFolder;
 };
 
+const handleCloseButtonClick = () => {
+  if (tempSelectedFiles.value.length === 0) {
+    selectedFiles.value = [];
+  }
+
+  closeDirectory();
+};
+
 const closeDirectory = () => {
   selectedDirectory.value = fullDirectory.value;
   showDirectory.value = false;
@@ -124,7 +132,7 @@ onMounted(fetchAllDirectories);
 
           <div
             class="action-button-container close-button-container"
-            @click="closeDirectory"
+            @click="handleCloseButtonClick"
           >
             <img :src="CloseButton" alt="close-button" class="close-button" />
           </div>

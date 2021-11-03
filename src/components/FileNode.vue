@@ -72,6 +72,11 @@ const randomFallbackImage = computed(() => {
   border-radius: 8px;
 }
 
+.file-node:active {
+  background: var(--color-grey-2);
+  border-radius: 8px;
+}
+
 .file-node-image {
   width: 100%;
   height: 28px;

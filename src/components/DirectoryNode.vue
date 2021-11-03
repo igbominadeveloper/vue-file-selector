@@ -56,6 +56,11 @@ const supportedFileFormats = ['image/jpeg', 'image/png', 'application/pdf'];
   border-radius: 8px;
 }
 
+.directory-node:active {
+  background: var(--color-grey-2);
+  border-radius: 8px;
+}
+
 .directory-node-icon {
   width: 100%;
   height: 28px;

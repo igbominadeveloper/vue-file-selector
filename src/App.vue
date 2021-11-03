@@ -85,23 +85,30 @@ watch(showDirectory, (newValue) => {
       Select Files
       <!-- I tried using teleport here -->
     </Button>
-    <section class="directory-tree" v-if="showDirectory">
+    <section class="directory-tree" v-show="showDirectory">
       <header class="directory-tree-header">
-        <div @click="goBack">
+        <div
+          :class="[
+            'action-button-container back-button-container',
+            !showBackButton && 'no-hover',
+          ]"
+          @click="goBack"
+        >
           <img
             :src="BackButton"
             alt="back-button"
-            class="pointer"
+            class="back-button"
             v-show="showBackButton"
           />
         </div>
         <h1 class="directory-name">{{ selectedDirectory.name }}</h1>
-        <img
-          :src="CloseButton"
-          alt="close-button"
-          class="pointer"
+
+        <div
+          class="action-button-container close-button-container"
           @click="closeDirectory"
-        />
+        >
+          <img :src="CloseButton" alt="close-button" class="close-button" />
+        </div>
       </header>
 
       <div class="directory-tree-body">
@@ -175,16 +182,33 @@ watch(showDirectory, (newValue) => {
 
 .directory-tree-header {
   display: grid;
-  grid-template-columns: 16.43px auto 14.13px;
+  grid-template-columns: 44px auto 44px;
   gap: 13.79px;
   align-items: center;
+  /* padding: 8px; */
 }
-/* 
-#teleport-target {
-  position: absolute;
-  top: 10rem;
-  left: 15rem;
-} */
+
+.back-button {
+  width: 16.43px;
+}
+
+.action-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 100%;
+}
+
+.action-button-container:hover {
+  background: var(--mild-shadow);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.close-button {
+  width: 14.13px;
+}
 
 .directory-tree {
   height: 380px;
@@ -193,15 +217,15 @@ watch(showDirectory, (newValue) => {
 
   background: var(--color-white);
 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 4px 8px var(--mild-shadow), 0px 8px 24px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
 
-  padding: 0 21.78px;
+  padding: 8px;
 
   font-family: var(--font-family-secondary);
 
   display: grid;
-  grid-template-rows: 60px auto 64px;
+  grid-template-rows: 44px auto 64px;
   gap: 10px;
 }
 
@@ -216,8 +240,8 @@ watch(showDirectory, (newValue) => {
 
   display: grid;
   grid-auto-flow: row;
-  grid-auto-rows: max-content;
-  gap: 16px;
+  grid-auto-rows: 44px;
+  gap: 5px;
   align-items: flex-start;
 }
 </style>

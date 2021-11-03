@@ -63,6 +63,13 @@ const randomFallbackImage = computed(() => {
   gap: 12px;
   align-items: center;
   cursor: pointer;
+  height: 100%;
+  padding: 8px;
+}
+
+.file-node:hover {
+  background: var(--mild-shadow);
+  border-radius: 8px;
 }
 
 .file-node-image {

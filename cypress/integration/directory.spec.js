@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-const url = Cypress.env(process.env.NODE_ENV);
+const url = Cypress.env('production') || 'http://localhost:3000';
 
 describe('File Selector', () => {
   beforeEach(() => {

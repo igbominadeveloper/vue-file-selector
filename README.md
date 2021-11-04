@@ -1,3 +1,22 @@
+# Vue File Selector
+
+[![Cypress Tests](https://github.com/igbominadeveloper/vue-file-selector/actions/workflows/main.yml/badge.svg)](https://github.com/igbominadeveloper/vue-file-selector/actions/workflows/main.yml)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7da0461b-a871-4497-96c1-cd8ae360b15e/deploy-status)](https://app.netlify.com/sites/vue-file-selector/deploys)
+
+A tiny application demonstrating a file directory in vue js
+
+# How to run locally
+
+- clone the repo
+- run `yarn` to install all the dependencies
+- run `yarn dev` to spin up the dev server
+
+# Run e2e Tests
+
+- start the dev server (`yarn dev`)
+- run `yarn test`
+
 # Vue 3 + Typescript + Vite
 
 This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
